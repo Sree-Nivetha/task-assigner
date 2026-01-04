@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Timetable — Task Assigner</title>
+    <link rel="stylesheet" href="css/timetable.css">
+    <link rel="stylesheet" href="css/cheer.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- Including main styles for variables -->
+</head>
+
+<body>
+    <header class="site-header"
+        style="background: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow);">
+        <div class="header-left" style="display: flex; align-items: center; gap: 2rem;">
+            <a href="dashboard.html" class="brand"
+                style="font-weight: 700; font-size: 1.5rem; color: var(--primary); text-decoration: none;">Task
+                Assigner</a>
+            <nav style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" style="text-decoration: none; color: #666;">Home</a>
+                <a href="timetable.html" class="active"
+                    style="text-decoration: none; color: var(--primary); font-weight: 600;">Timetable</a>
+            </nav>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 1rem;">
+            <div id="greeting" class="greeting" aria-live="polite" style="font-weight: 600; color: var(--primary);">
+            </div>
+            <button id="set-name-btn" class="btn small" style="width: auto; padding: 5px 15px;">Set name</button>
+            <button class="secondary" onclick="location.href='index.html'"
+                style="width: auto; padding: 5px 15px;">Logout</button>
+        </div>
+    </header>
+
+    <main class="main" style="padding: 2rem;">
+        <section class="timetable-section card">
+            <div class="controls"
+                style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; flex-wrap: wrap;">
+                <label for="start-day">Start day:</label>
+                <select id="start-day" style="width: auto;">
+                    <option value="1">Monday</option>
+                    <option value="0">Sunday</option>
+                </select>
+
+                <label for="days-count">Days:</label>
+                <select id="days-count" style="width: auto;">
+                    <option value="5" selected>Mon–Fri (5)</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+
+                <label for="slot-minutes">Slot (min):</label>
+                <select id="slot-minutes" style="width: auto;">
+                    <option value="30" selected>30</option>
+                    <option value="60">60</option>
+                </select>
+
+                <button id="clear-storage" class="btn danger" style="width: auto;">Clear local events</button>
+            </div>
+
+            <div id="timetable" class="timetable" role="grid" aria-label="Weekly timetable"></div>
+        </section>
+    </main>
+
+    <!-- Modal for creating/editing an event -->
+    <div id="event-modal" class="modal" aria-hidden="true"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;">
+        <div class="modal-backdrop" style="background: rgba(0,0,0,0.5); width: 100%; height: 100%; position: absolute;">
+        </div>
+        <div class="modal-panel card" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+            style="position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 500px; width: 90%; background: white; padding: 2rem;">
+            <h2 id="modal-title">Create timetable entry</h2>
+            <form id="event-form">
+                <div class="form-row">
+                    <label for="evt-title">Title</label>
+                    <input id="evt-title" name="title" required />
+                </div>
+                <div class="form-row">
+                    <label for="evt-desc">Description</label>
+                    <input id="evt-desc" name="description" />
+                </div>
+                <div class="form-row">
+                    <label for="evt-day">Day</label>
+                    <select id="evt-day" name="day"></select>
+                </div>
+                <div class="form-row">
+                    <label for="evt-start">Start time</label>
+                    <input id="evt-start" name="start" type="time" required />
+                </div>
+                <div class="form-row">
+                    <label for="evt-duration">Duration (minutes)</label>
+                    <input id="evt-duration" name="duration" type="number" min="1" step="30" value="30" required />
+                </div>
+                <div class="form-row">
+                    <label for="evt-priority">Priority</label>
+                    <select id="evt-priority" name="priority">
+                        <option value="1">High</option>
+                        <option value="2" selected>Normal</option>
+                        <option value="3">Low</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="evt-tags">Tags (comma separated)</label>
+                    <input id="evt-tags" name="tags" placeholder="math,homework" />
+                </div>
+                <div class="form-actions" style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <button type="submit" class="btn primary">Save</button>
+                    <button type="button" id="evt-cancel" class="btn">Cancel</button>
+                    <button type="button" id="evt-delete" class="btn danger" hidden>Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/greeting.js"></script>
+    <script src="js/cheer.js"></script>
+    <script src="js/timetable.js"></script>
+</body>
+
+</html>

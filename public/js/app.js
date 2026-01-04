@@ -1,11 +1,16 @@
 const API_URL = 'http://localhost:3000/api';
 const user = JSON.parse(localStorage.getItem('user'));
+window.APP = { user: { name: user ? user.username : 'Teacher' } };
 
 if (!user) {
     window.location.href = 'index.html';
 }
 
-document.getElementById('welcomeMsg').innerText = `Welcome, ${user.username}`;
+if (window.TeacherUI) {
+    window.TeacherUI.initGreeting({ selector: '#welcomeMsg', name: user.username });
+} else {
+    document.getElementById('welcomeMsg').innerText = `Welcome, ${user.username}`;
+}
 document.getElementById('taskDate').valueAsDate = new Date(); // Default to today
 
 // Load Tasks on start
@@ -141,6 +146,11 @@ async function markDone(id) {
                 origin: { y: 0.6 },
                 colors: ['#6366f1', '#a855f7', '#ec4899']
             });
+
+            // Show Cheer
+            if (window.TeacherUI) {
+                showNotification(window.TeacherUI.getCheer());
+            }
 
             // Remind about the next class
             remindNextClass(id);
@@ -309,8 +319,25 @@ function checkReminders() {
 }
 
 function showNotification(msg) {
-    // Toast notification could go here. For now just log.
-    console.log(msg);
+    // Show a simple toast-like alert if it's a cheer
+    const toast = document.createElement('div');
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.background = 'var(--primary)';
+    toast.style.color = 'white';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '8px';
+    toast.style.boxShadow = 'var(--shadow)';
+    toast.style.zIndex = '1000';
+    toast.style.animation = 'fadeIn 0.5s ease-out';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.5s ease-in';
+        setTimeout(() => toast.remove(), 500);
+    }, 3000);
 }
 
 // Request notification permission on load

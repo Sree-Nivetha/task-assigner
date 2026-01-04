@@ -28,13 +28,13 @@ A premium, easy-to-use Task Scheduler application designed specifically for teac
 
 3.  **Open the App**
     Visit [http://localhost:3000](http://localhost:3000) in your browser.
+    - Use the **Add Task** form to schedule a class or task.
+    - View your tasks in the **Task List**.
+    - Click **"View Timetable"** to see a clean table of today's schedule.
 
 ## 📋 Usage Guide
 1.  **Login**: Enter any username to create an account or log in.
 2.  **Dashboard**:
-    - Use the **Add Task** form to schedule a class or task.
-    - View your tasks in the **Task List**.
-    - Click **"View Timetable"** to see a clean table of today's schedule.
 3.  **Reminders**: Keep the tab open to receive audio/visual alerts at the scheduled time.
 
 ## 📱 Future Updates
