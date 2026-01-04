@@ -13,11 +13,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API ROUTES ---
 
-// Login / Signup (Simplified for MVP)
+// Login
 app.post('/api/login', (req, res) => {
-    const { username, password } = req.body; // In real app, hash password!
+    const { username, password } = req.body;
 
-    // Check if user exists
     let user = db.find('users', u => u.username === username);
 
     if (user) {
@@ -27,10 +26,26 @@ app.post('/api/login', (req, res) => {
             res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
     } else {
-        // Auto-signup for MVP simplicity if user doesn't exist
-        const newUser = db.add('users', { username, password });
-        res.json({ success: true, user: { id: newUser.id, username: newUser.username }, message: 'Account created!' });
+        res.status(404).json({ success: false, message: 'User not found. Please sign up.' });
     }
+});
+
+// Signup
+app.post('/api/signup', (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ success: false, message: 'Username and password are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = db.find('users', u => u.username === username);
+    if (existingUser) {
+        return res.status(400).json({ success: false, message: 'Username already taken' });
+    }
+
+    const newUser = db.add('users', { username, password });
+    res.json({ success: true, user: { id: newUser.id, username: newUser.username }, message: 'Account created successfully!' });
 });
 
 // Get Tasks

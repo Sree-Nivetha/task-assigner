@@ -5,9 +5,9 @@ A premium, easy-to-use Task Scheduler application designed specifically for teac
 ## ✨ Features
 - **User Friendly**: Simple Login/Signup (auto-detects new users).
 - **Task Management**: Add tasks with specific dates and times.
-- **Visual Timetable**: View your day in a structured chronological format.
-- **Smart Reminders**: Get browser notifications and sound alerts when a task is due.
-- **Premium UI**: Modern glassmorphism design with responsive animations.
+- **Integrated Timetable**: Real-time chronological view of your day directly on the dashboard.
+- **Smart Next-Class Alerts**: Instant notification of your next class as soon as you finish the current one.
+- **Celebration Feedback**: Confetti bursts and success sounds when you complete your work.
 
 ## 🛠️ Technology Stack
 - **Frontend**: HTML5, CSS3 (Custom Variables & Grids), Vanilla JavaScript.
