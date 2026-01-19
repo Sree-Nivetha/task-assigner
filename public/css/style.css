@@ -1,30 +1,64 @@
 :root {
-    --primary: #6C63FF;
+    --primary: #1b2a4d;
     --secondary: #FF6584;
-    --dark: #2F2E41;
+    --dark: #12192f;
     --light: #F9F9F9;
     --glass: rgba(255, 255, 255, 0.1);
     --glass-border: rgba(255, 255, 255, 0.2);
-    --text-main: #333;
+    --text-main: #1c2740;
     --text-light: #fff;
-    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --shadow: 0 8px 32px 0 rgba(27, 42, 77, 0.15);
     --font-main: 'Inter', sans-serif;
+    /* Light theme */
+    --bg-primary: linear-gradient(135deg, #e9eef7 0%, #cfdaf2 100%);
+    --bg-secondary: #e2e8f5;
+    --bg-card: #ffffff;
+    --bg-navbar: #ffffff;
+    --bg-input: #ffffff;
+    --border-color: #e1e6f0;
+    --border-input: #e1e6f0;
+    --text-secondary: #4a5568;
+    --text-muted: #6b7280;
+    --shadow-card: 0 4px 6px rgba(27, 42, 77, 0.08);
+    --shadow-navbar: 0 2px 10px rgba(27, 42, 77, 0.08);
+    --hover-bg: #e8edf8;
+    --hover-card: #f1f4fb;
+}
+
+[data-theme="dark"] {
+    --bg-primary: linear-gradient(135deg, #0b1224 0%, #0f1b33 100%);
+    --bg-secondary: #0a101d;
+    --bg-card: #121a2c;
+    --bg-navbar: #121a2c;
+    --bg-input: #121a2c;
+    --border-color: #233049;
+    --border-input: #233049;
+    --text-main: #e2e8f0;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.35);
+    --shadow-navbar: 0 2px 10px rgba(0, 0, 0, 0.35);
+    --hover-bg: #16223b;
+    --hover-card: #1a2744;
+    --glass: rgba(18, 26, 44, 0.55);
+    --glass-border: rgba(35, 48, 73, 0.4);
 }
 
 body {
     font-family: var(--font-main);
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--bg-primary);
     min-height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--text-main);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Auth Page specific */
 .auth-container {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--glass);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -35,6 +69,7 @@ body {
     max-width: 400px;
     width: 90%;
     animation: fadeIn 0.8s ease-out;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .auth-container h1 {
@@ -43,23 +78,25 @@ body {
 }
 
 .auth-container p {
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 2rem;
 }
 
 /* Dashboard Specific */
 body.dashboard-body {
     display: block;
-    background: #f0f2f5;
+    background: var(--bg-secondary);
+    transition: background 0.3s ease;
 }
 
 .navbar {
-    background: white;
+    background: var(--bg-navbar);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-navbar);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo {
@@ -88,11 +125,11 @@ body.dashboard-body {
 
 /* Cards */
 .card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s, background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
@@ -112,12 +149,14 @@ textarea {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
-    border: 2px solid #eee;
+    border: 2px solid var(--border-input);
     border-radius: 8px;
     box-sizing: border-box;
     /* Important for padding */
     font-family: inherit;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, background 0.3s ease, color 0.3s ease;
+    background: var(--bg-input);
+    color: var(--text-main);
 }
 
 input:focus,
@@ -143,18 +182,19 @@ button {
 }
 
 button:hover {
-    background: #5753cf;
+    background: #243863;
     transform: scale(1.02);
 }
 
 button.secondary {
     background: transparent;
-    color: #666;
-    border: 1px solid #ddd;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 button.secondary:hover {
-    background: #f5f5f5;
+    background: var(--hover-bg);
 }
 
 /* Task List */
@@ -165,15 +205,16 @@ button.secondary:hover {
 }
 
 .task-item {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-card);
     border-left: 5px solid var(--primary);
     animation: slideIn 0.4s ease-out;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .task-item.completed {
@@ -183,7 +224,7 @@ button.secondary:hover {
 
 .task-item.completed .task-title {
     text-decoration: line-through;
-    color: #888;
+    color: var(--text-muted);
 }
 
 .task-content h3 {
@@ -193,7 +234,7 @@ button.secondary:hover {
 
 .task-meta {
     font-size: 0.85rem;
-    color: #888;
+    color: var(--text-muted);
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -295,17 +336,20 @@ button.secondary:hover {
 .timetable td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 .timetable th {
-    background-color: #f8f9fa;
-    color: var(--dark);
+    background-color: var(--hover-card);
+    color: var(--text-main);
     font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .timetable tr:hover {
-    background-color: #f9f9f9;
+    background-color: var(--hover-card);
+    transition: background-color 0.3s ease;
 }
 
 .timetable .status-badge {
@@ -320,7 +364,46 @@ button.secondary:hover {
     color: #856404;
 }
 
+[data-theme="dark"] .status-pending {
+    background: #664d03;
+    color: #ffc107;
+}
+
 .status-done {
     background: #d4edda;
     color: #155724;
+}
+
+[data-theme="dark"] .status-done {
+    background: #0f5132;
+    color: #75b798;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-main);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.theme-toggle:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.theme-toggle:focus {
+    outline: none;
+    border-color: var(--primary);
 }
