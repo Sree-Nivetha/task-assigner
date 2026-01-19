@@ -136,10 +136,15 @@ body.dashboard-body {
     transform: translateY(-2px);
 }
 
-.add-task-card {
+/* Sidebar */
+.sidebar {
     position: sticky;
     top: 2rem;
     height: fit-content;
+}
+
+.add-task-card {
+    margin-bottom: 0;
 }
 
 /* Form Elements */

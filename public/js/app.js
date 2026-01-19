@@ -344,3 +344,93 @@ function showNotification(msg) {
 if (Notification.permission !== "denied") {
     Notification.requestPermission();
 }
+
+// --- Study Timer Logic ---
+let studyInterval;
+let timeLeft;
+let isStudying = true;
+let isTimerRunning = false;
+
+function toggleStudyTimer() {
+    const startBtn = document.getElementById('startStudyBtn');
+    const resetBtn = document.getElementById('resetStudyBtn');
+    const label = document.getElementById('timerLabel');
+    const studyMins = parseInt(document.getElementById('studyMins').value) || 25;
+    const breakMins = parseInt(document.getElementById('breakMins').value) || 5;
+
+    if (!isTimerRunning) {
+        // Start or Resume
+        if (!timeLeft) {
+            timeLeft = studyMins * 60;
+            isStudying = true;
+            label.innerText = "Focus Time";
+            label.style.color = "var(--secondary)";
+        }
+
+        isTimerRunning = true;
+        startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Session';
+        resetBtn.style.display = 'block';
+
+        studyInterval = setInterval(() => {
+            timeLeft--;
+            displayTimer();
+
+            if (timeLeft <= 0) {
+                clearInterval(studyInterval);
+                isTimerRunning = false;
+
+                // Switch phase
+                const audio = document.getElementById('notifySound');
+                audio.play().catch(e => console.log('Audio blocked'));
+
+                if (isStudying) {
+                    alert("Focus session complete! Time for a break.");
+                    timeLeft = breakMins * 60;
+                    isStudying = false;
+                    label.innerText = "Break Time";
+                    label.style.color = "#2ecc71";
+                } else {
+                    alert("Break over! Ready to focus again?");
+                    timeLeft = studyMins * 60;
+                    isStudying = true;
+                    label.innerText = "Focus Time";
+                    label.style.color = "var(--secondary)";
+                }
+
+                toggleStudyTimer(); // Automatically start next phase
+            }
+        }, 1000);
+    } else {
+        // Pause
+        clearInterval(studyInterval);
+        isTimerRunning = false;
+        startBtn.innerHTML = '<i class="fas fa-play"></i> Resume Session';
+    }
+}
+
+function resetStudyTimer() {
+    clearInterval(studyInterval);
+    isTimerRunning = false;
+    timeLeft = null;
+    isStudying = true;
+
+    document.getElementById('startStudyBtn').innerHTML = '<i class="fas fa-play"></i> Start Session';
+    document.getElementById('resetStudyBtn').style.display = 'none';
+    document.getElementById('timerLabel').innerText = 'Ready';
+    document.getElementById('timerLabel').style.color = 'var(--text-muted)';
+    document.getElementById('timerTime').innerText = document.getElementById('studyMins').value + ':00';
+}
+
+function displayTimer() {
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    document.getElementById('timerTime').innerText =
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Update display when inputs change
+document.getElementById('studyMins').addEventListener('input', (e) => {
+    if (!isTimerRunning && !timeLeft) {
+        document.getElementById('timerTime').innerText = e.target.value + ':00';
+    }
+});

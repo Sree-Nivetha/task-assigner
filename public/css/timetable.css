@@ -9,13 +9,18 @@
 .timetable {
     display: grid;
     grid-template-columns: 80px repeat(var(--days, 5), 1fr);
-    grid-template-rows: 50px repeat(var(--slots, 24), 60px);
+    grid-template-rows: 50px repeat(var(--slots, 24), 1fr);
+    /* Changed from 60px to 1fr for flex height */
+    min-height: 600px;
+    height: 100%;
     gap: 1px;
     background-color: var(--border-color, #eee);
     border: 1px solid var(--border-color, #ddd);
-    overflow-x: auto;
+    overflow: hidden;
+    /* Changed from auto to hidden for container-based scrolling if needed, or rely on main */
     border-radius: 8px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    flex-grow: 1;
 }
 
 .timetable-header {
