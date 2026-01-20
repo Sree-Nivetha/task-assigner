@@ -3,54 +3,92 @@
     {
       "username": "saravanansaravanan9567@gmail.com",
       "password": "vignesh2122",
-      "id": "1767436605236"
+      "id": "1767436605236",
+      "role": "admin"
     },
     {
       "username": "vignesh",
       "password": "123456",
-      "id": "1767515842846"
+      "id": "1767515842846",
+      "role": "user"
     },
     {
       "username": "carl_teacher",
       "password": "password123",
-      "id": "1767515954829"
+      "id": "1767515954829",
+      "role": "user"
     },
     {
       "username": "vicky",
       "password": "123456",
-      "id": "1767533484982"
+      "id": "1767533484982",
+      "role": "user"
+    },
+    {
+      "username": "Sree Nivetha",
+      "password": "sree123",
+      "id": "1768881900204",
+      "role": "user"
     }
   ],
   "tasks": [
     {
-      "title": "assignment complition",
+      "id": "1767533517661",
+      "title": "assignment completion",
       "description": "",
       "date": "2026-01-04",
       "time": "19:02",
-      "userId": "1767533484982",
+      "assignedTo": "1767533484982",
+      "assignedBy": "1767436605236",
       "status": "Done",
       "createdAt": "2026-01-04T13:31:57.660Z",
-      "id": "1767533517661"
+      "activityLog": [
+        {
+          "action": "Task assigned",
+          "by": "saravanansaravanan9567@gmail.com",
+          "time": "2026-01-04T13:31:57.660Z"
+        },
+        {
+          "action": "Status changed to Done",
+          "by": "vicky@gmail.com",
+          "time": "2026-01-04T18:45:00.000Z"
+        }
+      ]
     },
     {
-      "title": "paper correction",
+      "title": "Assignment",
       "description": "",
-      "date": "2026-01-05",
-      "time": "11:28",
-      "userId": "1767533484982",
+      "date": "2026-01-20",
+      "time": "09:36",
+      "userId": "1768881900204",
       "status": "Done",
-      "createdAt": "2026-01-05T05:58:07.654Z",
-      "id": "1767592687654"
+      "createdAt": "2026-01-20T04:06:10.294Z",
+      "id": "1768881970294",
+      "activityLog": [
+        {
+          "action": "Status changed to Done",
+          "time": "2026-01-20T04:06:35.525Z"
+        }
+      ]
     },
     {
-      "title": "paper correction",
-      "description": "",
-      "date": "2026-01-06",
-      "time": "11:23",
-      "userId": "1767515842846",
+      "title": "Guest lecture",
+      "userId": "1768881900204",
+      "assignedBy": "1767436605236",
       "status": "Done",
-      "createdAt": "2026-01-06T04:53:11.635Z",
-      "id": "1767675191636"
+      "createdAt": "2026-01-20T04:37:43.741Z",
+      "activityLog": [
+        {
+          "action": "Task assigned",
+          "by": "saravanansaravanan9567@gmail.com",
+          "time": "2026-01-20T04:37:43.741Z"
+        },
+        {
+          "action": "Status changed to Done",
+          "time": "2026-01-20T04:39:53.465Z"
+        }
+      ],
+      "id": "1768883863742"
     }
   ]
 }

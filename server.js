@@ -21,7 +21,7 @@ app.post('/api/login', (req, res) => {
 
     if (user) {
         if (user.password === password) {
-            res.json({ success: true, user: { id: user.id, username: user.username } });
+            res.json({ success: true, user: { id: user.id, username: user.username, role: user.role} });
         } else {
             res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
@@ -58,8 +58,14 @@ app.get('/api/tasks', (req, res) => {
     res.json(userTasks);
 });
 
+app.get('/api/users', (req, res) => {
+    const users = db.get('users');
+    res.json(users);
+});
+
+
 // Add Task
-app.post('/api/tasks', (req, res) => {
+/*app.post('/api/tasks', (req, res) => {
     const { title, description, date, time, userId } = req.body;
     if (!title || !date || !time || !userId) {
         return res.status(400).json({ error: 'Missing required fields' });
@@ -77,6 +83,38 @@ app.post('/api/tasks', (req, res) => {
 
     const added = db.add('tasks', newTask);
     res.json(added);
+});*/
+// Admin Assign Task
+app.post('/api/admin/assign-task', (req, res) => {
+    const { title, description, date, time, assignedTo, adminId } = req.body;
+
+    // 1. Verify admin
+    const admin = db.find('users', u => u.id === adminId);
+    if (!admin || admin.role !== 'admin') {
+        return res.status(403).json({ error: 'Only admin can assign tasks' });
+    }
+
+    // 2. Create task with activity log
+    const newTask = {
+        title,
+        description,
+        date,
+        time,
+        userId: assignedTo,            // assigned user
+        assignedBy: adminId,            // admin ID
+        status: 'Pending',
+        createdAt: new Date().toISOString(),
+        activityLog: [
+            {
+                action: 'Task assigned',
+                by: admin.username,
+                time: new Date().toISOString()
+            }
+        ]
+    };
+
+    const added = db.add('tasks', newTask);
+    res.json(added);
 });
 
 // Update Task Status
@@ -84,13 +122,60 @@ app.put('/api/tasks/:id', (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const updated = db.update('tasks', id, { status });
-    if (updated) {
-        res.json(updated);
-    } else {
-        res.status(404).json({ error: 'Task not found' });
+    const task = db.find('tasks', t => t.id === id);
+    if (!task) {
+        return res.status(404).json({ error: 'Task not found' });
     }
+
+    task.status = status;
+    task.activityLog = task.activityLog || [];
+    task.activityLog.push({
+        action: `Status changed to ${status}`,
+        by: req.body.username,
+        time: new Date().toISOString()
+    });
+
+    const updated = db.update('tasks', id, task);
+    res.json(updated);
+
 });
+
+// Admin View All Task Activities
+app.get('/api/admin/tasks', (req, res) => {
+    const adminId = req.query.adminId;
+
+    const admin = db.find('users', u => u.id === adminId);
+    if (!admin || admin.role !== 'admin') {
+        return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const tasks = db.get('tasks');
+    res.json(tasks);
+});
+
+// Admin: Assign Task
+app.post('/api/admin/assign-task', (req, res) => {
+    const { title, userId } = req.body;
+
+    if (!title || !userId) {
+        return res.status(400).json({ error: 'Title and User required' });
+    }
+
+    const task = {
+        title,
+        description: '',
+        date: new Date().toISOString().split('T')[0],
+        time: '09:00',
+        userId,
+        status: 'Pending',
+        createdAt: new Date().toISOString(),
+        activity: ['Task assigned']
+    };
+
+    const added = db.add('tasks', task);
+    res.json(added);
+});
+
 
 // Delete Task
 app.delete('/api/tasks/:id', (req, res) => {
@@ -101,6 +186,22 @@ app.delete('/api/tasks/:id', (req, res) => {
     } else {
         res.status(404).json({ error: 'Task not found' });
     }
+});
+
+app.get('/api/admin/tasks', (req, res) => {
+    const tasks = db.get('tasks');
+    const users = db.get('users');
+
+    const enriched = tasks.map(t => {
+        const user = users.find(u => u.id === t.userId);
+        return {
+            ...t,
+            username: user ? user.username : 'Unknown',
+            activity: t.activity || []
+        };
+    });
+
+    res.json(enriched);
 });
 
 // Start Server
